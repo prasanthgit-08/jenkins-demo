@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -22,7 +23,6 @@ pipeline {
             }
         }
 
-        
         stage('Deploy') {
             steps {
                 bat '''
@@ -32,14 +32,15 @@ pipeline {
                 '''
 
                 echo 'Application deployed and startup verified successfully'
-          }
-
-      }
+            }
+        }
+    }
 
     post {
         success {
             echo 'CI/CD pipeline completed successfully!'
         }
+
         failure {
             echo 'Pipeline failed. Check the Console Output.'
         }
