@@ -8,7 +8,7 @@ public class HomeController {
 
     @GetMapping("/")
     public String home() {
-        return "Spring Boot application is running successfully!";
+        return "Hello! Jenkins Poll SCM is working successfully!!";
     }
 
     @GetMapping("/health")
