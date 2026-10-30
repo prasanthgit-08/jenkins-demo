@@ -13,6 +13,6 @@ public class HomeController {
 
     @GetMapping("/health")
     public String health() {
-        return "Application Jenkins Status is good!";
+        return "Application Jenkins Welcome Page!";
     }
 }
