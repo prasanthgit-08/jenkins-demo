@@ -25,11 +25,8 @@ pipeline {
 
         stage('Deploy') {
             steps {
-                bat '''
-                if not exist C:\\jenkins-deploy mkdir C:\\jenkins-deploy
-                powershell -NoProfile -Command "$jar = Get-ChildItem 'target' -Filter '*.jar' | Where-Object { $_.Name -notlike '*.original' } | Select-Object -First 1; if ($null -eq $jar) { throw 'JAR file not found' }; Copy-Item $jar.FullName 'C:\\jenkins-deploy\\jenkins-demo.jar' -Force"
-                '''
-                echo 'Deployment artifact copied successfully'
+                bat 'powershell -NoProfile -ExecutionPolicy Bypass -File deploy.ps1'
+                echo 'Application deployed successfully'
             }
         }
     }
@@ -37,7 +34,9 @@ pipeline {
     post {
         success {
             echo 'CI/CD pipeline completed successfully!'
+            echo 'Application URL: http://localhost:8081'
         }
+
         failure {
             echo 'Pipeline failed. Check the Console Output.'
         }
