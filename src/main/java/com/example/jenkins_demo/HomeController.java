@@ -13,6 +13,6 @@ public class HomeController {
 
     @GetMapping("/health")
     public String health() {
-        return "Application Status: GOOD!";
+        return "Application Status is Healthy!";
     }
 }
