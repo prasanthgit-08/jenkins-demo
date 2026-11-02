@@ -30,18 +30,18 @@ pipeline {
 
         stage('Docker image Build') {
             steps {
-                sh 'docker build -t my-new-image:v1 .'
+                bat 'docker build -t my-new-image:v1 .'
                 echo 'Docker image built successfully'
             }
         }
         stage('Docker container remove') {
             steps {
-                sh 'docker rm -f my-new-container || true'
+                bat 'docker rm -f my-new-container || true'
             }
         }
         stage('Docker cointainer run') {
             steps {
-                sh 'docker run -d -p 8081:80 --name my-new-container my-new-image:v1'
+                bat 'docker run -d -p 8081:80 --name my-new-container my-new-image:v1'
                 echo 'Docker run sucessfully'
             }
         }
