@@ -12,7 +12,10 @@ pipeline {
 
         stage('Build and Test') {
             steps {
-                bat 'call mvnw.cmd clean verify'
+                bat '''
+                set "PATH=C:/Windows/System32/WindowsPowerShell/v1.0;%PATH%"
+                call mvnw.cmd clean verify
+                '''
             }
         }
 
