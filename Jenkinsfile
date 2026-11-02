@@ -22,6 +22,11 @@ pipeline {
                                  fingerprint: true
             }
         }
+        stage('print path') {
+            steps {
+               sh 'echo $PATH'
+            }
+        }
 
         stage('Docker Build') {
             steps {
