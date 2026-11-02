@@ -53,7 +53,7 @@ pipeline {
             steps {
                 bat '''
                     set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                    docker run -d -p 8081:80 --name my-new-container my-new-image:v1
+                    docker run -d -p 8083:80 --name my-new-container my-new-image:v1
                 '''
                 echo 'Docker run successfully'
             }
