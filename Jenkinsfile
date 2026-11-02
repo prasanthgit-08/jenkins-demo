@@ -68,7 +68,6 @@ pipeline {
                 echo 'Docker container deployed successfully'
             }
         }
-    }
 
     post {
         success {
