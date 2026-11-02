@@ -28,23 +28,27 @@ pipeline {
             }
         }
 
-        stage('Docker Build') {
+        stage('Docker image Build') {
             steps {
-                bat 'docker build -t my-new-image:v1 .'
+                sh 'docker build -t my-new-image:v1 .'
                 echo 'Docker image built successfully'
+            }
+        }
+        stage('Docker container remove') {
+            steps {
+                sh 'docker rm -f my-new-container || true'
+            }
+        }
+        stage('Docker cointainer run') {
+            steps {
+                sh 'docker run -d -p 8081:80 --name my-new-container my-new-image:v1'
+                echo 'Docker run sucessfully'
             }
         }
 
         stage('Docker Deploy') {
             steps {
                 bat '''
-                docker rm -f my-new-container 2>NUL
-
-                docker run -d ^
-                    --name my-new-container ^
-                    -p 8081:8081 ^
-                    my-new-image:v1
-
                 powershell -NoProfile -ExecutionPolicy Bypass -Command "$started = $false; for ($i=0; $i -lt 30; $i++) { Start-Sleep -Seconds 2; if (docker inspect -f '{{.State.Running}}' jenkins-demo-container 2>$null) { $started = $true; break } }; if (-not $started) { docker logs jenkins-demo-container; throw 'Docker container failed to start' }; if ((docker inspect -f '{{.State.Running}}' jenkins-demo-container) -ne 'true') { docker logs jenkins-demo-container; throw 'Docker container is not running' }"
                 '''
 
