@@ -25,7 +25,7 @@ pipeline {
 
         stage('Docker Build') {
             steps {
-                bat 'docker build -t jenkins-demo:latest .'
+                bat 'docker build -t my-new-image:v1 .'
                 echo 'Docker image built successfully'
             }
         }
@@ -33,12 +33,12 @@ pipeline {
         stage('Docker Deploy') {
             steps {
                 bat '''
-                docker rm -f jenkins-demo-container 2>NUL
+                docker rm -f my-new-container 2>NUL
 
                 docker run -d ^
-                    --name jenkins-demo-container ^
+                    --name my-new-container ^
                     -p 8081:8081 ^
-                    jenkins-demo:latest
+                    my-new-image:v1
 
                 powershell -NoProfile -ExecutionPolicy Bypass -Command "$started = $false; for ($i=0; $i -lt 30; $i++) { Start-Sleep -Seconds 2; if (docker inspect -f '{{.State.Running}}' jenkins-demo-container 2>$null) { $started = $true; break } }; if (-not $started) { docker logs jenkins-demo-container; throw 'Docker container failed to start' }; if ((docker inspect -f '{{.State.Running}}' jenkins-demo-container) -ne 'true') { docker logs jenkins-demo-container; throw 'Docker container is not running' }"
                 '''
