@@ -30,22 +30,32 @@ pipeline {
                sh 'echo $PATH'
             }
         }
-
         stage('Docker image Build') {
             steps {
-                bat 'docker build -t my-new-image:v1 .'
+                bat '''
+                    set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
+                    docker build -t my-new-image:v1 .
+                '''
                 echo 'Docker image built successfully'
             }
         }
+
+
         stage('Docker container remove') {
             steps {
-                bat 'docker rm -f my-new-container || true'
+                bat '''
+                    set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
+                    docker rm -f my-new-container || exit /b 0
+                '''
             }
         }
         stage('Docker cointainer run') {
             steps {
-                bat 'docker run -d -p 8081:80 --name my-new-container my-new-image:v1'
-                echo 'Docker run sucessfully'
+                bat '''
+                    set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
+                    docker run -d -p 8081:80 --name my-new-container my-new-image:v1
+                '''
+                echo 'Docker run successfully'
             }
         }
 
