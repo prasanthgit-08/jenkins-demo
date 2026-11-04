@@ -1,3 +1,4 @@
+
 pipeline {
     agent any
 
@@ -25,49 +26,53 @@ pipeline {
                                  fingerprint: true
             }
         }
-        stage('print path') {
+
+        stage('Print Path') {
             steps {
-               sh 'echo $PATH'
+                bat 'echo %PATH%'
             }
         }
-        stage('Docker image Build') {
+
+        stage('Docker Image Build') {
             steps {
                 bat '''
-                    set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                    docker build -t my-new-image:v1 .
+                set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
+                docker build -t my-new-image:v1 .
                 '''
                 echo 'Docker image built successfully'
             }
         }
 
-
-        stage('Docker container remove') {
+        stage('Docker Container Remove') {
             steps {
                 bat '''
-                    set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                    docker rm -f my-new-container || exit /b 0
+                set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
+                docker rm -f my-new-container || exit /b 0
                 '''
             }
         }
-        stage('Docker cointainer run') {
+
+        stage('Docker Container Run') {
             steps {
                 bat '''
-                    set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                    docker run -d -p 8083:80 --name my-new-container my-new-image:v1
+                set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
+                docker run -d -p 8083:81 --name my-new-container my-new-image:v1
                 '''
-                echo 'Docker run successfully'
+                echo 'Docker container started successfully'
             }
         }
 
         stage('Docker Deploy') {
             steps {
                 bat '''
-                    set "PATH=C:/Windows/System32/WindowsPowerShell/v1.0;C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                    powershell -NoProfile -ExecutionPolicy Bypass -Command "$started = $false; for ($i=0; $i -lt 30; $i++) { Start-Sleep -Seconds 2; if ((docker inspect -f '{{.State.Running}}' my-new-container 2>$null) -eq 'true') { $started = $true; break } }; if (-not $started) { docker logs my-new-container; throw 'Docker container failed to start' }; Write-Host 'Docker container is running successfully'"
+                set "PATH=C:/Windows/System32/WindowsPowerShell/v1.0;C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
+
+                powershell -NoProfile -ExecutionPolicy Bypass -Command "$started = $false; for ($i=0; $i -lt 30; $i++) { Start-Sleep -Seconds 2; if ((docker inspect -f '{{.State.Running}}' my-new-container 2>$null) -eq 'true') { $started = $true; break } }; if (-not $started) { docker logs my-new-container; throw 'Docker container failed to start' }; Write-Host 'Docker container is running successfully'"
                 '''
                 echo 'Docker container deployed successfully'
+            }
+        }
     }
-}
 
     post {
         success {
