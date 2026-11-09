@@ -33,45 +33,28 @@ pipeline {
             }
         }
 
-        stage('Docker Image Build') {
+       stage('Docker Compose Deploy') {
             steps {
                 bat '''
                 set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                docker build -t my-new-image:v1 .
+                docker compose up -d --build
                 '''
-                echo 'Docker image built successfully'
+                echo 'Docker Compose deployment completed successfully'
             }
         }
 
-        stage('Docker Container Remove') {
+        stage('Docker Compose Verification') {
             steps {
                 bat '''
                 set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                docker rm -f my-new-container || exit /b 0
+
+                docker compose ps
+
+                docker compose logs --tail=50
                 '''
+                echo 'Docker Compose verification completed successfully'
             }
         }
-
-        stage('Docker Container Run') {
-            steps {
-                bat '''
-                set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                docker run -d -p 8083:8081 --name my-new-container my-new-image:v1
-                '''
-                echo 'Docker container started successfully'
-            }
-        }
-
-        stage('Docker Deploy') {
-            steps {
-                bat '''
-                set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                docker ps
-                docker logs my-new-container
-                '''
-                echo 'Docker container deployed successfully'
-          }
-       }
     }
 
     post {
