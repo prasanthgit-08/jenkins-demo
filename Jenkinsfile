@@ -65,13 +65,13 @@ pipeline {
         stage('Docker Deploy') {
             steps {
                 bat '''
-                set "PATH=C:/Windows/System32/WindowsPowerShell/v1.0;C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-
-                powershell -NoProfile -ExecutionPolicy Bypass -Command "$started = $false; for ($i=0; $i -lt 30; $i++) { Start-Sleep -Seconds 2; if ((docker inspect -f '{{.State.Running}}' my-new-container 2>$null) -eq 'true') { $started = $true; break } }; if (-not $started) { docker logs my-new-container; throw 'Docker container failed to start' }; Write-Host 'Docker container is running successfully'"
+                set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
+                docker ps
+                docker logs my-new-container
                 '''
                 echo 'Docker container deployed successfully'
-            }
-        }
+          }
+       }
     }
 
     post {
