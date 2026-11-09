@@ -35,28 +35,29 @@ pipeline {
 
        stage('Docker Compose Deploy') {
             steps {
-                bat '''
-                set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                docker-compose up -d --build
-                '''
-                echo 'Docker Compose deployment completed successfully'
-            }
-        }
+            bat '''
+            set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
 
-        stage('Docker Compose Verification') {
-            steps {
-                bat '''
-                set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-
-                docker-compose ps
-
-                docker-compose logs --tail=50
-                '''
-                echo 'Docker Compose verification completed successfully'
-            }
+            docker-compose up -d --build
+            '''
+            echo 'Spring Boot and MySQL deployed successfully'
         }
     }
 
+        stage('Docker Compose Verification') {
+            steps {
+            bat '''
+            set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
+
+            docker-compose ps
+
+            docker-compose logs --tail=50
+              '''
+            echo 'Deployment verification completed'
+            }
+        }
+    }
+    
     post {
         success {
             echo 'CI/CD pipeline completed successfully!'
