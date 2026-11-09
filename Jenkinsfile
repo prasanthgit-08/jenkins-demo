@@ -32,6 +32,24 @@ pipeline {
                 bat 'echo %PATH%'
             }
         }
+ 
+        stage('Docker Compose Check') {
+            steps {
+                bat '''
+                set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
+
+                where docker
+
+                docker --version
+
+                docker compose version
+        
+                where docker-compose
+
+                docker-compose version
+                '''
+         }
+    }
 
        stage('Docker Compose Deploy') {
             steps {
