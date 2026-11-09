@@ -1,0 +1,12 @@
+services:
+  springboot-app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+
+    container_name: springboot-compose-app
+
+    ports:
+      - "8086:8081"
+
+    restart: unless-stopped
