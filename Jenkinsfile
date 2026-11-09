@@ -14,6 +14,7 @@ pipeline {
         stage('Build and Test') {
             steps {
                 bat '''
+                'powershell -NoProfile -Command "Get-Content pom.xml -TotalCount 3"'
                 set "PATH=C:/Windows/System32/WindowsPowerShell/v1.0;%PATH%"
                 call mvnw.cmd clean verify
                 '''
