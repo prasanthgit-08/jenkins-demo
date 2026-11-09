@@ -32,30 +32,12 @@ pipeline {
                 bat 'echo %PATH%'
             }
         }
- 
-        stage('Docker Compose Check') {
-            steps {
-                bat '''
-                set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-
-                where docker
-
-                docker --version
-
-                docker compose version
-        
-                where docker-compose
-
-                docker-compose version
-                '''
-         }
-    }
 
        stage('Docker Compose Deploy') {
             steps {
                 bat '''
                 set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
-                docker compose up -d --build
+                docker-compose up -d --build
                 '''
                 echo 'Docker Compose deployment completed successfully'
             }
@@ -66,9 +48,9 @@ pipeline {
                 bat '''
                 set "PATH=C:/Users/Prasanth/AppData/Local/Programs/DockerDesktop/resources/bin;%PATH%"
 
-                docker compose ps
+                docker-compose ps
 
-                docker compose logs --tail=50
+                docker-compose logs --tail=50
                 '''
                 echo 'Docker Compose verification completed successfully'
             }
